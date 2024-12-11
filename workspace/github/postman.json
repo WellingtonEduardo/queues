@@ -1,0 +1,82 @@
+{
+    "info": {
+        "_postman_id": "aa7ccaae-93fb-456d-9675-f5bb6c91e9cd",
+        "name": "GitHub",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "39461669"
+    },
+    "item": [
+        {
+            "name": "Ping",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{url}}/octocat",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "octocat"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get PullRequest",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Accept",
+                        "value": "application/json",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{url}}/repos/laravel/lararavel/pulls",
+                    "host": [
+                        "{{url}}"
+                    ],
+                    "path": [
+                        "repos",
+                        "laravel",
+                        "laravel",
+                        "pulls"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "url",
+            "value": "https://api.github.com",
+            "type": "string"
+        }
+    ]
+}
