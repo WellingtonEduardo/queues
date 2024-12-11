@@ -10,11 +10,17 @@
             "name": "Ping",
             "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                    {
+                        "key": "X-GitHub-Api-Version",
+                        "value": "{{API_VERSION}}",
+                        "type": "text"
+                    }
+                ],
                 "url": {
-                    "raw": "{{url}}/octocat",
+                    "raw": "{{BASE_URL}}/octocat",
                     "host": [
-                        "{{url}}"
+                        "{{BASE_URL}}"
                     ],
                     "path": [
                         "octocat"
@@ -24,26 +30,32 @@
             "response": []
         },
         {
-            "name": "Get PullRequest",
+            "name": "Get Pull Request",
             "request": {
                 "method": "GET",
                 "header": [
                     {
-                        "key": "Accept",
-                        "value": "application/json",
+                        "key": "X-GitHub-Api-Version",
+                        "value": "{{API_VERSION}}",
                         "type": "text"
                     }
                 ],
                 "url": {
-                    "raw": "{{url}}/repos/laravel/lararavel/pulls",
+                    "raw": "{{BASE_URL}}/repos/laravel/laravel/pulls?state=all",
                     "host": [
-                        "{{url}}"
+                        "{{BASE_URL}}"
                     ],
                     "path": [
                         "repos",
                         "laravel",
                         "laravel",
                         "pulls"
+                    ],
+                    "query": [
+                        {
+                            "key": "state",
+                            "value": "all"
+                        }
                     ]
                 }
             },
@@ -74,8 +86,13 @@
     ],
     "variable": [
         {
-            "key": "url",
+            "key": "BASE_URL",
             "value": "https://api.github.com",
+            "type": "string"
+        },
+        {
+            "key": "API_VERSION",
+            "value": "2022-11-28",
             "type": "string"
         }
     ]
