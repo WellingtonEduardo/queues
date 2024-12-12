@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('pull_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('api_id');
+            $table->string('api_id')->unique();
             $table->string('api_number');
             $table->string('state');
             $table->string('title');
