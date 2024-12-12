@@ -11,6 +11,7 @@ class PullRequest extends Model
         'api_number',
         'state',
         'title',
+        'commits_total',
         'api_created_at',
         'api_updated_at',
         'api_closed_at',

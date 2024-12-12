@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\PullRequestSync;
+use App\Jobs\PullRequestAllSync;
 use Illuminate\Console\Command;
 
 class PullRequestSyncCommand extends Command
 {
-    protected $signature = 'app:pull-request-sync-command {repositoryFullName}';
+    protected $signature = 'app:pull-request-all-sync-command {repositoryFullName}';
 
 
     protected $description = 'Command description';
@@ -16,6 +16,6 @@ class PullRequestSyncCommand extends Command
     public function handle()
     {
         $repositoryFullName = $this->argument('repositoryFullName');
-        PullRequestSync::dispatch($repositoryFullName);
+        PullRequestAllSync::dispatch($repositoryFullName);
     }
 }

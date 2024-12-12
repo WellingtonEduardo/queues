@@ -11,33 +11,33 @@ class PullRequestSync implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public string $repositoryFullName, public int $page = 1)
+
+    public function __construct(public string $repositoryFullName, public int $number)
     {
 
     }
+
 
     public function handle(): void
     {
 
-        $url = "https://api.github.com/repos/{$this->repositoryFullName}/pulls?state=all&page={$this->page}";
+        $url = "https://api.github.com/repos/{$this->repositoryFullName}/pulls/{$this->number}";
         dump($url);
-        $pullRequestsResponse = Http::withToken(config('services.github.personal_access_token'))->get($url);
+        $pullRequestResponse = Http::withToken(config('services.github.personal_access_token'))->get($url);
 
-        $pullRequests = $pullRequestsResponse->json();
-
-
-        if (empty($pullRequests)) {
-            return;
-        }
-
-
-        foreach ($pullRequests as $pullRequest) {
-            PullRequestStore::dispatch($pullRequest);
-        }
-        $nextPage = $this->page + 1;
-        PullRequestSync::dispatch($this->repositoryFullName, $nextPage);
-
+        $pullRequest = $pullRequestResponse->json();
+        PullRequest::create(
+            [
+                'api_id' => $pullRequest['id'],
+                'api_number' => $pullRequest['number'],
+                'state' => $pullRequest['state'],
+                'title' => $pullRequest['title'],
+                'commits_total' => $pullRequest['commits'],
+                'api_created_at' => $pullRequest['created_at'],
+                'api_updated_at' => $pullRequest['updated_at'],
+                'api_closed_at' => $pullRequest['closed_at'] ?? null,
+                'api_merged_at' => $pullRequest['merged_at'] ?? null,
+            ]
+        );
     }
-
-
 }
