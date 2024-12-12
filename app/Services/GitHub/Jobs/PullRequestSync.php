@@ -11,14 +11,12 @@ class PullRequestSync implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public string $repositoryFullName, public int $number)
-    {
-    }
+    public function __construct(public string $repositoryFullName, public int $number) {}
 
     public function handle(): void
     {
 
-        $pullRequest = (new PullRequestService())->getPullRequest($this->repositoryFullName, $this->number);
+        $pullRequest = (new PullRequestService)->getPullRequest($this->repositoryFullName, $this->number);
 
         PullRequest::create(
             [

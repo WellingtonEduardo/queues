@@ -8,23 +8,20 @@ class PullRequestService
 {
     public function getPullRequestsAll(string $repositoryFullName, int $page): array
     {
-        $url = "https://api.github.com/repos/{$repositoryFullName}/pulls?state=all&page={$page}";
-        dump($url);
-        $pullRequestsResponse = Http::withToken(config('services.github.personal_access_token'))->get($url);
+        $url = "repos/{$repositoryFullName}/pulls?state=all&page={$page}";
 
-        $pullRequests = $pullRequestsResponse->json();
+        $pullRequests = (new Client())->http()->get($url);
 
-        return $pullRequests;
+        return $pullRequests->json();
     }
 
     public function getPullRequest(string $repositoryFullName, int $number): array
     {
         $url = "https://api.github.com/repos/{$repositoryFullName}/pulls/{$number}";
-        dump($url);
-        $pullRequestResponse = Http::withToken(config('services.github.personal_access_token'))->get($url);
 
-        $pullRequest = $pullRequestResponse->json();
+        $pullRequest = (new Client())->http()->get($url);
 
-        return $pullRequest;
+
+        return $pullRequest->json();
     }
 }

@@ -10,14 +10,12 @@ class PullRequestAllSync implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public string $repositoryFullName, public int $page = 1)
-    {
-    }
+    public function __construct(public string $repositoryFullName, public int $page = 1) {}
 
     public function handle(): void
     {
 
-        $pullRequests = (new PullRequestService())->getPullRequestsAll($this->repositoryFullName, $this->page);
+        $pullRequests = (new PullRequestService)->getPullRequestsAll($this->repositoryFullName, $this->page);
 
         if (empty($pullRequests)) {
             return;
