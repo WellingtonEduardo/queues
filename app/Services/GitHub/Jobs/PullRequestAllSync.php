@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Services\GitHub\Jobs;
 
+use App\Services\GitHub\PullRequestService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Http;
 
 class PullRequestAllSync implements ShouldQueue
 {
@@ -12,23 +12,16 @@ class PullRequestAllSync implements ShouldQueue
 
     public function __construct(public string $repositoryFullName, public int $page = 1)
     {
-
     }
 
     public function handle(): void
     {
 
-        $url = "https://api.github.com/repos/{$this->repositoryFullName}/pulls?state=all&page={$this->page}";
-        dump($url);
-        $pullRequestsResponse = Http::withToken(config('services.github.personal_access_token'))->get($url);
-
-        $pullRequests = $pullRequestsResponse->json();
-
+        $pullRequests = (new PullRequestService())->getPullRequestsAll($this->repositoryFullName, $this->page);
 
         if (empty($pullRequests)) {
             return;
         }
-
 
         foreach ($pullRequests as $pullRequest) {
             PullRequestSync::dispatch($this->repositoryFullName, $pullRequest['number']);
@@ -37,6 +30,4 @@ class PullRequestAllSync implements ShouldQueue
         PullRequestAllSync::dispatch($this->repositoryFullName, $nextPage);
 
     }
-
-
 }
